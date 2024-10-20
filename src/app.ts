@@ -1,8 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
-import authRoutes from "./routes/authRoutes";
+
 import indexRoutes from "./routes/index";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 const app = express();
@@ -13,6 +15,7 @@ connectDB();
 
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
+app.use('/users', userRoutes);
 
 const PORT = process.env.PORT ?? 3000;
 app.listen(PORT, () => {
