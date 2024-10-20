@@ -59,10 +59,6 @@ El servidor se ejecutará en el puerto 3000 o el que definas en el archivo `.env
 - `npm run build`: Compila el proyecto.
 - `npm run start`: Inicia el servidor en producción.
 
-## Contribuciones
-
-Las contribuciones son bienvenidas. Si deseas contribuir, por favor abre un **Pull Request** o **Issue** en este repositorio.
-
 ## Licencia
 
 Este proyecto está licenciado bajo los términos de la licencia MIT.
