@@ -44,6 +44,7 @@ Crea un archivo `.env` en la raíz del proyecto con las siguientes variables de 
 ```
 MONGO_URI=
 PORT=3000
+JWT_SECRET=
 ```
 
 ### 4. Correr el proyecto en desarrollo
