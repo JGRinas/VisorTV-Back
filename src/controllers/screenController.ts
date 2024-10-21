@@ -15,9 +15,11 @@ export const createScreen = async (
     for (const operatorId of assignedOperators) {
       const operator = await User.findById(operatorId);
       if (!operator || !["admin", "operator"].includes(operator.role)) {
-        res.status(400).json({
-          message: `El usuario con ID ${operatorId} no existe o no tiene el rol de admin u operator.`,
-        });
+        res
+          .status(400)
+          .json({
+            message: `El usuario con ID ${operatorId} no existe o no tiene el rol de admin u operator.`,
+          });
         return;
       }
       validOperators.push(operator._id);
@@ -48,6 +50,7 @@ export const createScreen = async (
 
     res.status(201).json({ message: "Pantalla creada exitosamente", screen });
   } catch (error) {
-    res.status(500).json({ message: "Error al crear la pantalla", error });
+    console.error(error); // Esto te ayudará a depurar el problema
+    res.status(500).json({ message: "Error al crear la pantalla" });
   }
 };
