@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../../src/app";
+import { app } from "../../api";
 import { Screen } from "../../src/models/Screen";
 import { Component } from "../../src/models/Component";
 import jwt from "jsonwebtoken";
