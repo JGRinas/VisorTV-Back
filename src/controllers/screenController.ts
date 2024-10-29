@@ -33,6 +33,7 @@ export const createScreen = async (
         title: component.title,
         content: component.content,
         location: component.location,
+        weatherItems: component.weatherItems,
       });
       await newComponent.save();
       componentIds.push(newComponent._id);
@@ -98,7 +99,6 @@ export const updateScreen = async (
     console.log("Buscando pantalla con id:", screenId);
     const screen = await Screen.findById(screenId);
 
-
     if (!screen) {
       res.status(404).json({ message: "Pantalla no encontrada" });
       return;
@@ -117,7 +117,9 @@ export const updateScreen = async (
     }
 
     // Eliminar componentes anteriores si es necesario
-    const oldComponentIds = screen.components.map((component: any) => component._id);
+    const oldComponentIds = screen.components.map(
+      (component: any) => component._id
+    );
     if (oldComponentIds.length > 0) {
       await Component.deleteMany({ _id: { $in: oldComponentIds } });
     }
@@ -131,6 +133,7 @@ export const updateScreen = async (
         title: componentData.title,
         content: componentData.content,
         location: componentData.location,
+        weatherItems: componentData.weatherItems,
       });
       await newComponent.save();
       componentIds.push(newComponent._id as Types.ObjectId); // Forzamos el tipo ObjectId
@@ -144,5 +147,50 @@ export const updateScreen = async (
   } catch (error) {
     console.error("Error al actualizar la pantalla:", error);
     res.status(500).json({ message: "Error al actualizar la pantalla" });
+  }
+};
+
+export const getScreenById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { screenId } = req.params;
+
+  try {
+    const screen = await Screen.findById(screenId).populate("components");
+    if (!screen) {
+      res.status(404).json({ message: "Pantalla no encontrada" });
+      return;
+    }
+    res.status(200).json(screen);
+  } catch (error) {
+    console.error("Error al obtener la pantalla:", error);
+    res.status(500).json({ message: "Error al obtener la pantalla" });
+  }
+};
+
+export const deleteScreenById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { screenId } = req.params;
+
+  try {
+    const screen = await Screen.findById(screenId);
+    if (!screen) {
+      res.status(404).json({ message: "Pantalla no encontrada" });
+      return;
+    }
+
+    // Eliminar los componentes asociados
+    await Component.deleteMany({ _id: { $in: screen.components } });
+
+    // Eliminar la pantalla
+    await screen.deleteOne({ _id: { screenId } });
+
+    res.status(200).json({ message: "Pantalla eliminada correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar la pantalla:", error);
+    res.status(500).json({ message: "Error al eliminar la pantalla" });
   }
 };
