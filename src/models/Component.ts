@@ -9,6 +9,7 @@ export interface IComponent extends Document {
     country: string;
     province: string;
   };
+  weatherItems?: string[];
 }
 
 const componentSchema: Schema = new Schema({
@@ -24,6 +25,7 @@ const componentSchema: Schema = new Schema({
     country: { type: String },
     province: { type: String },
   },
+  weatherItems: [{ type: String }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
